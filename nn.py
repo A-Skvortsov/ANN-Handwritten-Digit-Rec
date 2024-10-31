@@ -4,6 +4,28 @@ import math
 # 784 pixels for input, 10 possible outputs (0, 1,...,9), arbitrary hidden layers
 MLP_layout = [784, 16, 16, 10]
 
+class Value:
+
+    def __init__(self, val, grad=0.0):
+        self.val = val
+        self.grad = grad
+
+    def __add__(self, other):
+        return Value(self.val + other.val)
+
+    def __mul__(self, other):
+        return Value(self.val * other.val)
+
+    def __gt__(self, other):
+        return self.val > other.val
+
+    def __repr__(self):
+        return "Value obj: " + str(self.val)
+
+    def reLU(self):
+        return Value(max(0, self.val))
+
+
 class Neuron:
 
     def __init__(self, nout):
@@ -15,13 +37,13 @@ class Neuron:
 class Layer:
 
     def __init__(self, n, nout):
-        self.neurons = [Neuron(nout) for i in range(n)]       
-        
+        self.neurons = [Neuron(nout) for i in range(n)]
+
 
 class MLP:
 
     def __init__(self, MLP_layout):
-        self.layers = [Layer(size, next_size) 
+        self.layers = [Layer(size, next_size)
                        for size, next_size in zip(MLP_layout, MLP_layout[1:] + [0])]
 
 
@@ -33,16 +55,16 @@ class MLP:
             # for every neuron1 in layer1
                 # accum_val += neuronval * weight2
             # neuron2val = sigmoid(accum_val)
-        
-        
+
+
         # initialize neuron values to 0 before beginning
         for layer in self.layers:
             for neuron in layer.neurons:
                 neuron.val = Value(0.0)
-    
+
         for i in range(len(inpt)):  # loading first layer of mlp
-            mlp.layers[0].neurons[i].val = Value(inpt[i])
-    
+            self.layers[0].neurons[i].val = Value(inpt[i])
+
         for layer1, layer2 in zip(self.layers[:-1], self.layers[1:]):
             for neuron2, n in zip(layer2.neurons, range(len(layer2.neurons))):
                 neuron2.val += neuron2.bias;  # load with its bias
@@ -50,13 +72,13 @@ class MLP:
                     neuron2.val += neuron1.val * neuron1.weights[n]
                 neuron2.val = neuron2.val.reLU()  # commpression/activation f'n
         # print(self.result())
-    
-    
+
+
     # just prints the result of the last forward pass
     def result(self):
         last_layer = self.layers[-1]
         x = 0
-            
+
         for i in range(1, len(last_layer.neurons)):
             if (last_layer.neurons[i].val > last_layer.neurons[x].val):
                 x = i
@@ -69,8 +91,8 @@ class MLP:
         for i in range(len(last_layer.neurons)):
             loss += (last_layer.neurons[i].val.val - desired[i])**2
         return loss
-    
-    
+
+
     # assigns a gradient to each value (weight, bias, neuron) in the mlp
     # based on cost f'n which is computed as sum of squared diffs
     def backward(self, desired):
@@ -83,7 +105,7 @@ class MLP:
                 # if not in last layer...
                     # gradn = sum((grad neuron of prev layer)*(sigmoid deriv)*w)
                     # gradb = sum((grad neuron of prev layer)*(sigmoid deriv)*1)
-        
+
         # 1)
         for layer in self.layers:
             for neuron in layer.neurons:
@@ -91,12 +113,12 @@ class MLP:
                 neuron.bias.grad = 0.0
                 for weight in neuron.weights:
                     weight.grad = 0.0
-    
+
         # 2)
         last_layer = self.layers[len(self.layers)-1].neurons
         for neuron, n in zip(last_layer, range(len(last_layer))):
             neuron.val.grad = 2*(desired[n]- neuron.val.val)
-    
+
         # 3)
         for layer2, layer1 in zip(reversed(self.layers[:-1]), reversed(self.layers[1:])):
             for neuron2 in layer2.neurons:
@@ -112,9 +134,9 @@ class MLP:
                     neuron2.bias.grad += neuron1.val.grad * x
                 # If we are in the last layer, no need to compute gradb or gradn
                 # as they will never be used. Just unecessary
-                # what we want: "while NOT in the last layer, then compute grab & gradn"     
-    
-    
+                # what we want: "while NOT in the last layer, then compute grab & gradn"
+
+
     # updates mlp using the gradients of each value
     def update(self):
         for layer in self.layers:
