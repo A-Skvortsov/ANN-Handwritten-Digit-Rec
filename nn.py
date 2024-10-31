@@ -142,10 +142,10 @@ class MLP:
         for layer in self.layers:
             for neuron in layer.neurons:
                 # update bias
-                neuron.bias.val += 0.00001 * neuron.bias.grad
+                neuron.bias.val += -0.00001 * neuron.bias.grad
                 # update weights
                 for weight in neuron.weights:
-                    weight.val += 0.00001 * weight.grad
+                    weight.val += -0.00001 * weight.grad
 
     # used for debugging
     def printwb(self):

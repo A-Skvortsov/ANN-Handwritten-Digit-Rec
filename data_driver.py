@@ -1,7 +1,7 @@
 import keras
 from keras.datasets import mnist
 (train_x, train_y), (test_x, test_y) = mnist.load_data()
-from matplotlib import pyplot  
+# from matplotlib import pyplot
 # ^^useful for visualizing data
 # see https://www.askpython.com/python/examples/load-and-plot-mnist-dataset-in-python
 
@@ -13,9 +13,9 @@ class Data():
         self.outpt = []
         if (i == 0):
             self.load_data(train_x, train_y, num_exercises)
-        else: 
+        else:
             self.load_data(test_x, test_y, num_exercises)
-    
+
     def load_data(self, t_x, t_y, n):
         t = []
         d = []
@@ -31,8 +31,8 @@ class Data():
         for i in range(len(self.inpt)):
             self.inpt[i] = self.inpt[i] / 255.0
 
-    # casts desired output into list with a 1 at the index equal to 
-    # desired output (i.e. if desired output is 6, gives 
+    # casts desired output into list with a 1 at the index equal to
+    # desired output (i.e. if desired output is 6, gives
     # desired[i] = [0 0 0 0 0 0 1 0 0 0])
     def normalize_outpt(self):
         for i in range(len(self.outpt)):
