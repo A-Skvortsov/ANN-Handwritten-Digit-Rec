@@ -2,6 +2,12 @@
 
 A small artificial neural network (multi-layer perceptron) built from scratch. The ANN itself is a very general structure and can probably be used for a lot of things, here I train it with the task of handwritten digit recognition using the MNIST dataset from Keras. So far have achieved ~23\% accuracy on the test dataset. T^T
 
-Implements backpropogation, reLU as the activation function. Layout of the mlp can be adjusted by simply changing the MLP_layout variable in nn.py and initializing a new mlp with it. I set it to have 784 neurons in the first layer (corresponding to the 28x28 pixel size of MNIST images), 10 neurons in the last (1 for each possible digit) and the hidden layers are arbitrary.
+Characteristics:
+- Uses stochastic gradient descent (backprop after each training example)
+- ReLU as activation function
+- layout of the mlp can be adjusted w MLP_layout variable in nn.py
+	- initial layer requires 784 neurons (one per input pixel)
+	- final layer requires 10 neurons (1 for each possible digit)
+	- hidden layers are arbitrary, can be played with
 
 First venture with ANNs. s/o Andrej Karpathy.
