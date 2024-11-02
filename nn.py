@@ -118,6 +118,9 @@ class MLP:
         last_layer = self.layers[len(self.layers)-1].neurons
         for neuron, n in zip(last_layer, range(len(last_layer))):
             neuron.val.grad = 2*(desired[n]- neuron.val.val)
+            neuron.bias.grad = neuron.val.grad
+                if neuron.val =< 0:
+                    neuron.bias.grad = 0
 
         # 3)
         for layer2, layer1 in zip(reversed(self.layers[:-1]), reversed(self.layers[1:])):
