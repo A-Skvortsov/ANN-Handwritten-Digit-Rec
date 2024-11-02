@@ -119,7 +119,7 @@ class MLP:
         for neuron, n in zip(last_layer, range(len(last_layer))):
             neuron.val.grad = 2*(desired[n]- neuron.val.val)
             neuron.bias.grad = neuron.val.grad
-                if neuron.val =< 0:
+                if neuron.val.val =< 0:
                     neuron.bias.grad = 0
 
         # 3)
