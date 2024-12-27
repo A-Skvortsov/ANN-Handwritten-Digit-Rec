@@ -22,5 +22,7 @@ total = 0.0
 for i in range(10000):
     total += 1
     mlp.forward(test.inpt[i])
-    if (test.outpt[i].index(1) == mlp.result()): correct += 1
-    print(i, "            exp: ", test.outpt[i].index(1), "act: ", mlp.result(), "         ", correct / total)
+    if (test.outpt[i].index(1) == mlp.result()): 
+        correct += 1
+        print(i, "            exp: ", test.outpt[i].index(1), "act: ", mlp.result(), "         ", correct / total, "             !")
+    else: print(i, "            exp: ", test.outpt[i].index(1), "act: ", mlp.result(), "         ", correct / total)
