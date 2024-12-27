@@ -46,3 +46,18 @@ for i in range(10000):
         correct += 1
         print(i, "            exp: ", test.outpt[i].index(1), "act: ", mlp.result(), "         ", correct / total, "             !")
     else: print(i, "            exp: ", test.outpt[i].index(1), "act: ", mlp.result(), "         ", correct / total)
+
+
+
+"""
+from matplotlib import pyplot  
+# for visualizing data
+# see https://www.askpython.com/python/examples/load-and-plot-mnist-dataset-in-python
+
+for i in range(9568, 9577):
+    pyplot.imshow(train_x[i], cmap=pyplot.get_cmap('gray'))
+    pyplot.show()
+pyplot.imshow(train_x[9573], cmap=pyplot.get_cmap('gray'))
+pyplot.show()
+print(train.outpt[9573])
+"""
