@@ -1,10 +1,11 @@
+BATCH_SIZE = 32
 mlp = MLP(MLP_layout)  # initializing our mlp
 
 # loading training data
 train = Data(60000)
 print(len(train.inpt[0]), train.outpt[0])
 
-# training
+# training, batch size = 1
 l = 0.0
 for i in range(60000):
     mlp.forward(train.inpt[i])
@@ -14,6 +15,25 @@ for i in range(60000):
     mlp.update()
 # mlp.result()
 
+# training, variable batch size
+"""
+counter = 0
+l = [0.0 for i in range(BATCH_SIZE)]
+for i in range(3000):
+    mlp.forward(train.inpt[i])
+    mlp.initgrads(train.outpt[i])
+    l[counter] = mlp.lossCE(train.outpt[i])
+    counter += 1
+    
+    if (counter == BATCH_SIZE):
+        av_loss = sum(l) / BATCH_SIZE
+        print(av_loss)
+        counter = 0
+        mlp.divide_first_layer_grads()
+        mlp.backward_v2()
+        mlp.update()
+        mlp.zero_grads()
+"""
 
 # testing
 test = Data(10000, 1)
