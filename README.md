@@ -1,6 +1,6 @@
 # ANN-Handwritten-Digit-rec
 
-A small artificial neural network (multi-layer perceptron) built from scratch. The ANN itself is a very general structure and can probably be used for a lot of things, here I train it with the task of handwritten digit recognition using the MNIST dataset from Keras. So far have achieved ~23\% accuracy on the test dataset. T^T
+A small artificial neural network (multi-layer perceptron) built from scratch. The ANN itself is a very general structure and can probably be used for a lot of things, here I train it with the task of handwritten digit recognition using the MNIST dataset from Keras. So far have achieved 88.5% accuracy on 1000 examples of the test dataset.
 
 Characteristics:
 - Uses stochastic gradient descent (backprop after each training example)
