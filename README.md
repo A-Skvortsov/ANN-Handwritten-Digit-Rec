@@ -1,14 +1,16 @@
-# ANN-Handwritten-Digit-rec
+# ANN-Handwritten-Digit-Rec
 
-A small artificial neural network (multi-layer perceptron) built from scratch. The ANN itself is a very general structure and can probably be used for a lot of things, here I train it with the task of handwritten digit recognition using the MNIST dataset from Keras. So far have achieved 88.5% accuracy on 1000 examples of the test dataset.
+A small artificial neural network built from scratch to take on the handwritten digit recognition task given by the MNIST database. So far have achieved 95.3% accuracy on the full 10000 samples of the test dataset. This was achieved with the most basic ANN characteristics (with the exception of that mentioned in the 'more nuanced details' section), constant learning rate and no convolution.
 
-Characteristics:
-- Uses stochastic gradient descent (backprop after each training example)
-- Leaky ReLU as activation function (slope parameter of 0.1 for negative values)
+ANN Characteristics:
+- Dense/fully connected
+- 2 Hidden layers, each with 100 neurons
+- Uses stochastic gradient descent with batch size of 1 (i.e. ANN updates after each training example)
+- Learning rate of 0.01
+- LReLU as activation function with slope parameter of 0.1 for negative values (ALPHA variable in nn.py)
+
+More Nuianced Details:
 - Cross-entropy loss function, softmax for output layer
-- layout of the mlp can be adjusted w MLP_layout variable in nn.py
-	- initial layer requires 784 neurons (one per input pixel)
-	- final layer requires 10 neurons (1 for each possible digit)
-	- hidden layers are arbitrary, can be played with
+- He Kaiming initialization for the weights, biases initialized to 0
 
 First venture with ANNs. s/o Andrej Karpathy.
