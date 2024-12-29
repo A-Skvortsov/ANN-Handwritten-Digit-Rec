@@ -1,7 +1,12 @@
 # Code for saving the ANN (its weights and biases) to external csv files
-# Should eventually add load() functionality to load a saved ANN from csv
 import csv
 EMPTY = "          "  # for formatting purposes
+B_SAVETO = '1_all_biases.csv'
+W_SAVETO = '1_all_weights.csv'
+N_SAVETO = '1_all_neurons.csv'
+
+B_LOAD = '0_all_biases.csv'
+W_LOAD = '0_all_weights.csv'
 
 """
 Saving all ANN info to csv for debugging and general analysis
@@ -11,7 +16,27 @@ Saves:
     - all current neuron values (as a result of last forward pass)
 """
 def save():
-    with open('0_all_biases.csv', 'w') as csvfile:
+    save_biases()
+    save_neurons()
+    save_weights()
+    
+"""
+Loading saved ANN info (weights and biases) from csv.
+"""
+def load():
+    load_biases()
+    load_weights()
+
+
+""" ================================================================================================
+====================================================================================================
+IMPLEMENTATIONS BELOW ==============================================================================
+====================================================================================================
+================================================================================================ """
+    
+    
+def save_biases():
+    with open(B_SAVETO, 'w') as csvfile:
         writer = csv.writer(csvfile, delimiter=',')
         writer.writerow(['B0', 'B1', 'B2', 'B3', '', 'BG0', 'BG1', 'BG2', 'BG3'])
     
@@ -26,7 +51,8 @@ def save():
                 except: row[j] = EMPTY
             writer.writerow(row)
 
-    with open('0_all_neurons.csv', 'w') as csvfile:
+def save_neurons():
+    with open(N_SAVETO, 'w') as csvfile:
         writer = csv.writer(csvfile, delimiter=',')
         writer.writerow(['V0', 'V1', 'V2', 'V3', '', 'VG0', 'VG1', 'VG2', 'VG3'])
     
@@ -40,8 +66,9 @@ def save():
                 try: row[j] = mlp.layers[j - len(mlp.layers) - 1].neurons[i].val.grad
                 except: row[j] = EMPTY
             writer.writerow(row)
-
-    with open('0_all_weights.csv', 'w') as csvfile:
+            
+def save_weights():
+    with open(W_SAVETO, 'w') as csvfile:
         writer = csv.writer(csvfile, delimiter=',')
         writer.writerow(['W0', 'W1', 'W2', 'W3', '', 'WG0', 'WG1', 'WG2', 'WG3'])
 
@@ -57,3 +84,28 @@ def save():
                     except: row[j] = EMPTY
                 writer.writerow(row)
             writer.writerow([EMPTY for i in range(2 * len(mlp.layers) + 1)])
+    
+def load_biases():
+    with open(B_LOAD, newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        reader.__next__()  # gets rid of top row labels
+    
+        for row in reader:
+            for i in range(len(MLP_LAYOUT)):
+                if reader.line_num - 2 < MLP_LAYOUT[i]:  # reader.line_num is at 2 upon first iteration of outer loop
+                    mlp.layers[i].neurons[reader.line_num - 2].bias = Value(float(row[i]))
+                    
+def load_weights():
+    with open(W_LOAD, newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        reader.__next__()
+    
+        for n in range(max(MLP_LAYOUT)):
+            i = 0  # current weight of neuron n
+            while i < max([len(mlp.layers[x].neurons[0].weights) for x in range(len(MLP_LAYOUT))]):  # while i is less than max # of weights in any layer
+                row = reader.__next__()
+                for j in range(len(MLP_LAYOUT)):  # j is current layer
+                    if i < len(mlp.layers[j].neurons[0].weights) and n < len(mlp.layers[j].neurons):
+                        mlp.layers[j].neurons[n].weights[i] = Value(float(row[j]))
+                i += 1
+            reader.__next__()  # skips empty lines, which occur every 100 lines to indicate new neuron

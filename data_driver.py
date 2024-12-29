@@ -1,13 +1,12 @@
 # Data driver
-
 import keras
 from keras.datasets import mnist
-(train_x, train_y), (test_x, test_y) = mnist.load_data()
 
 class Data():
 
     # i=1 for testing, i=0 (default) for training
     def __init__(self, num_exercises, i=0):
+        (train_x, train_y), (test_x, test_y) = mnist.load_data()
         self.inpt = []
         self.outpt = []
         if (i == 0):
