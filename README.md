@@ -20,6 +20,7 @@ A small artificial neural network built from scratch to take on the handwritten 
 - example.py; contains the code to test and train the model. This code depends on nn.py and data_driver.py
 - 0\_all\_biases.csv; the saved biases of the ANN that achieved 95.3% accuracy on the complete MNIST test set. B# columns correspond to bias values, BG# columns correspond to gradient values for the corresponding biases (used for debugging). Note that the first layer biases are not actually used for forward passes (as input layers should not have biases), but they are redundantly computed during backpropogation and updating.
 - 0\_all\_weights.csv; the saved weights of the ANN that achieved 95.3% accuracy on the complete MNIST test set. W# columns correspond to bias values, WG# columns correspond to gradient values for the corresponding biases (used for debugging). Note that the last layer has no weights and so its columns (W# and WG#) are empty.
+- save_ann.py; code for saving a currently available MLP instance (its weights, biases and current gradients and neuron values) to csv files. TODO: add load() functionality to load saved MLP instance from csv
 
 
 
